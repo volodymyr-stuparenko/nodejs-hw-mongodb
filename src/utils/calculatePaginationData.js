@@ -1,6 +1,4 @@
-import createHttpError from 'http-errors';
-
-export const calculatePaginationData = (page, perPage, count) => {
+export const calculatePaginationData = (count, page, perPage) => {
   const totalPages = Math.ceil(count / perPage);
   const hasNextPage = page < totalPages;
   const hasPreviousPage = page > 1;
