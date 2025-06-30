@@ -12,8 +12,10 @@ import {
 } from '../validation/contacts.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import { isValidId } from '../middlewares/isValidId.js';
+import { authenticate } from '../middlewares/authenticate.js';
 
 const router = Router();
+router.use('/contacts', authenticate);
 
 router.use('/contacts/:contactId', isValidId);
 router.get('/contacts', getContactsController);
