@@ -16,7 +16,7 @@ export const registerUser = async (payload) => {
   const existingUser = await UsersCollection.findOne({ email: payload.email });
 
   if (existingUser) {
-    throw createHttpError(409, 'User already registered!');
+    throw createHttpError(409, 'Email in use');
   }
 
   const encryptedPassword = await bcrypt.hash(payload.password, 10);
@@ -38,7 +38,7 @@ export const loginUser = async (payload) => {
   const isEqual = await bcrypt.compare(payload.password, user.password);
 
   if (!isEqual) {
-    throw createHttpError(401, 'Unauthorized');
+    throw createHttpError(401, 'User login and password does not match!');
   }
 
   await SessionsCollection.findOneAndDelete({ userId: user._id });
@@ -49,4 +49,37 @@ export const loginUser = async (payload) => {
   });
 
   return sessions;
+};
+
+export const refreshUsersSession = async (sessionId, refreshToken) => {
+  const session = await SessionsCollection.findOne({
+    _id: sessionId,
+    refreshToken,
+  });
+
+  if (!session) {
+    throw createHttpError(401, 'Session not found!');
+  }
+
+  if (session.refreshTokenValidUntil < new Date()) {
+    await SessionsCollection.findByIdAndDelete(sessionId);
+
+    throw createHttpError(401, 'Session token expired!');
+  }
+
+  await SessionsCollection.findByIdAndDelete(sessionId);
+
+  const newSessionsColllection = await SessionsCollection.create({
+    ...createSession(),
+    userId: session.userId,
+  });
+
+  return newSessionsColllection;
+};
+
+export const logoutUser = async (sessionId, refreshToken) => {
+  await SessionsCollection.findOneAndDelete({
+    _id: sessionId,
+    refreshToken,
+  });
 };
