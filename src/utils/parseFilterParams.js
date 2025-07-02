@@ -18,7 +18,6 @@ export const parseFilterParams = (query) => {
 
   const parsedType = parseType(type);
   const parsedIsFavourite = parseIsFavourite(isFavourite);
-  console.log(parsedIsFavourite);
   return {
     type: parsedType,
     isFavourite: parsedIsFavourite,
