@@ -15,3 +15,13 @@ export const SMTP = {
 };
 
 export const JWT_SECRET = 'JWT_SECRET';
+
+export const CLOUDINARY = {
+  CLOUD_NAME: 'CLOUD_NAME',
+  API_KEY: 'API_KEY',
+  API_SECRET: 'API_SECRET',
+
+  ENABLE_CLOUDINARY: 'ENABLE_CLOUDINARY',
+};
+
+export const APP_DOMAIN = 'APP_DOMAIN';
