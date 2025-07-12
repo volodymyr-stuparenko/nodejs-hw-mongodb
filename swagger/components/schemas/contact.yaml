@@ -22,7 +22,7 @@ properties:
   phoneNumber:
     description: "Contact's number"
     type: number
-    example: 12
+    example: '+384568226732'
   email:
     description: "Contact's email"
     type: string
